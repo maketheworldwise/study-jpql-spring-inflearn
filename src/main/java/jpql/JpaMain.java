@@ -1,5 +1,7 @@
 package jpql;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -24,12 +26,11 @@ public class JpaMain {
 
 			em.persist(member);
 
-			// 반환 타입 명확할 때
 			TypedQuery<Member> typedQuery1 = em.createQuery("SELECT m FROM Member m", Member.class);
-			TypedQuery<String> typedQuery2 = em.createQuery("SELECT m.name FROM Member m", String.class);
+			List<Member> resultList = typedQuery1.getResultList();
 
-			// 반환 타입 불명확할 때
-			Query query = em.createQuery("SELECT m.name FROM Member m");
+			TypedQuery<Member> typedQuery2 = em.createQuery("SELECT m FROM Member m WHERE m.id = 1", Member.class);
+			Member result = typedQuery2.getSingleResult();
 
 			tx.commit();
 		} catch (Exception e) {
